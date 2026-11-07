@@ -1,371 +1,661 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vurukuti Hyma Yadav - Frontend Developer</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vurukuti Hyma Yadav | Software & App Developer</title>
+  
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-dark: #0a0c16;
+      --bg-card: rgba(18, 22, 40, 0.7);
+      --border-card: rgba(255, 255, 255, 0.1);
+      --primary: #00f2fe;
+      --secondary: #4facfe;
+      --accent: #8a2be2;
+      --text-main: #f0f4fc;
+      --text-muted: #94a3b8;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-code: 'Space Grotesk', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 3D WebGL Canvas Layer */
+    #webgl-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Glassmorphism Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      backdrop-filter: blur(14px);
+      background: rgba(10, 12, 22, 0.75);
+      border-bottom: 1px solid var(--border-card);
+      z-index: 1000;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-family: var(--font-code);
+      font-size: 1.4rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* Layout Sections */
+    section {
+      padding: 6rem 8% 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--font-code);
+      font-size: 2.2rem;
+      margin-bottom: 2.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 5rem;
+    }
+
+    .hero-badge {
+      font-family: var(--font-code);
+      background: rgba(0, 242, 254, 0.1);
+      color: var(--primary);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      margin-bottom: 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hero-badge i {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.9); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--primary), #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #050b14;
+      box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 242, 254, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-card);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-3px);
+    }
+
+    /* 3D Glassmorphism Cards */
+    .tilt-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      transform: perspective(1000px);
+    }
+
+    .tilt-card:hover {
+      border-color: rgba(0, 242, 254, 0.5);
+      box-shadow: 0 10px 30px rgba(0, 242, 254, 0.1);
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .skill-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      color: var(--primary);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .skill-tags span {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.35rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+    }
+
+    /* Experience & Projects */
+    .experience-container, .projects-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .projects-grid {
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 0.8rem;
+    }
+
+    .exp-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .exp-company {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .exp-date {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-family: var(--font-code);
+    }
+
+    ul.clean-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    ul.clean-list li {
+      position: relative;
+      padding-left: 1.4rem;
+      margin-bottom: 0.6rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    ul.clean-list li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    .project-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-links {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .project-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .project-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Contact Section */
+    .contact-card {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .contact-socials {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-btn {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-card);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-main);
+      font-size: 1.2rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-btn:hover {
+      background: var(--primary);
+      color: #050b14;
+      transform: translateY(-4px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 0;
+      border-top: 1px solid var(--border-card);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      section { padding: 4rem 5%; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="logo">HY</div>
-            <div class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <header id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Vurukuti Hyma Yadav</h1>
-                    <h2>Frontend Developer</h2>
-                    <p>Creating engaging, responsive, and user-friendly web experiences</p>
-                    <div class="hero-buttons">
-                        <a href="#contact" class="btn btn-primary">Contact Me</a>
-                        <a href="#projects" class="btn btn-secondary">View My Work</a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <div class="profile-pic">
-                        <!-- Replace with your actual image path -->
-                        <img src="profile-pic.jpg" alt="Vurukuti Hyma Yadav">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+  <!-- Three.js 3D Background Canvas -->
+  <canvas id="webgl-bg"></canvas>
 
-    <!-- About Section -->
-    <section id="about" class="about section-padding">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="section-content">
-                <p>A passionate frontend developer with strong foundations in HTML, CSS, and JavaScript. I focus on creating intuitive user interfaces and seamless user experiences. With keen attention to detail and a commitment to writing clean, efficient code, I aim to build modern web applications that blend functionality with aesthetic appeal.</p>
-                <p>Looking to leverage my technical skills to contribute to innovative frontend projects and grow as a professional developer.</p>
-            </div>
-        </div>
-    </section>
+  <!-- Navigation -->
+  <nav>
+    <a href="#home" class="nav-logo">&lt;Hyma.Dev /&gt;</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-    <!-- Education Section -->
-    <section id="education" class="education section-padding">
-        <div class="container">
-            <h2 class="section-title">Education</h2>
-            <div class="education-container">
-                <div class="education-card">
-                    <h3>Bachelor's Degree</h3>
-                    <div class="school-name">Sri Chaitanya Women's College</div>
-                    <div class="education-details">
-                        <p>Graduation Year: 2021</p>
-                        <p>CGPA: 9.0/10</p>
-                    </div>
-                </div>
-                
-                <div class="education-card">
-                    <h3>Intermediate Education</h3>
-                    <div class="school-name">NRI Junior College</div>
-                    <div class="education-details">
-                        <p>Completion Year: 2018</p>
-                        <p>Percentage: 93%</p>
-                    </div>
-                </div>
-                
-                <div class="education-card">
-                    <h3>Secondary Education</h3>
-                    <div class="school-name">Sri Suryatej E Smart School</div>
-                    <div class="education-details">
-                        <p>CGPA: 9.0/10</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-badge">
+      <i class="fa-solid fa-circle"></i> Available for Software & App Dev Roles
+    </div>
+    <h1>Hi, I'm <span>Vurukuti Hyma Yadav</span></h1>
+    <p class="hero-subtitle">
+      Software & Mobile App Developer specializing in responsive web architectures, database query optimization, and intuitive UI/UX design.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-code"></i> View Projects</a>
+      <a href="#contact" class="btn btn-secondary"><i class="fa-solid fa-envelope"></i> Contact Me</a>
+    </div>
+  </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills section-padding">
-        <div class="container">
-            <h2 class="section-title">Technical Skills</h2>
-            <div class="skills-container">
-                <div class="skill-category">
-                    <h3>Core Frontend Skills</h3>
-                    <ul class="skill-list">
-                        <li>
-                            <span class="skill-name">HTML5</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 90%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="skill-name">CSS3</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 85%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="skill-name">JavaScript</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%"></div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="skill-category">
-                    <h3>Programming Languages</h3>
-                    <ul class="skill-list">
-                        <li>
-                            <span class="skill-name">C</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="skill-name">Java</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%"></div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="skill-category">
-                    <h3>Tools & Concepts</h3>
-                    <ul class="skill-list">
-                        <li>
-                            <span class="skill-name">Responsive Design</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="skill-name">Git/GitHub</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 70%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="skill-name">Web Accessibility</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 65%"></div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="skill-category">
-                    <h3>Additional Skills</h3>
-                    <ul class="skill-list no-bars">
-                        <li>Problem Solving</li>
-                        <li>Analytical Thinking</li>
-                        <li>UI/UX Awareness</li>
-                        <li>Team Collaboration</li>
-                        <li>Time Management</li>
-                    </ul>
-                </div>
-            </div>
+  <!-- Skills Section with 3D Tilt Cards -->
+  <section id="skills">
+    <h2 class="section-title">Technical Expertise</h2>
+    <div class="skills-grid">
+      
+      <div class="tilt-card skill-card" data-tilt data-tilt-max="12" data-tilt-glare data-tilt-max-glare="0.2">
+        <h3><i class="fa-solid fa-code"></i> Languages</h3>
+        <div class="skill-tags">
+          <span>JavaScript (ES6+)</span>
+          <span>TypeScript</span>
+          <span>Java</span>
+          <span>Kotlin (App Dev)</span>
+          <span>C</span>
         </div>
-    </section>
+      </div>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects section-padding">
-        <div class="container">
-            <h2 class="section-title">Projects</h2>
-            <div class="projects-container">
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="project1.jpg" alt="Personal Website Project">
-                    </div>
-                    <div class="project-content">
-                        <h3>Responsive Personal Website</h3>
-                        <div class="project-tech">
-                            <span>HTML5</span>
-                            <span>CSS3</span>
-                            <span>JavaScript</span>
-                        </div>
-                        <p>A fully responsive personal website/portfolio built from scratch featuring mobile-first design, smooth animations, contact form, and optimized images.</p>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-small">Live Demo</a>
-                            <a href="https://github.com/hymayadav" class="btn btn-small">GitHub</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="project2.jpg" alt="Landing Page Project">
-                    </div>
-                    <div class="project-content">
-                        <h3>Interactive Landing Page</h3>
-                        <div class="project-tech">
-                            <span>HTML5</span>
-                            <span>CSS3</span>
-                            <span>JavaScript</span>
-                        </div>
-                        <p>A landing page for a fictional product with interactive elements including animated elements, form validation, and image slider/carousel.</p>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-small">Live Demo</a>
-                            <a href="https://github.com/hymayadav" class="btn btn-small">GitHub</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="project3.jpg" alt="Web Application Project">
-                    </div>
-                    <div class="project-content">
-                        <h3>Frontend Web Application</h3>
-                        <div class="project-tech">
-                            <span>HTML5</span>
-                            <span>CSS3</span>
-                            <span>JavaScript</span>
-                        </div>
-                        <p>A simple web app featuring dynamic content updates, local storage functionality, and clean UI design principles.</p>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-small">Live Demo</a>
-                            <a href="https://github.com/hymayadav" class="btn btn-small">GitHub</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="tilt-card skill-card" data-tilt data-tilt-max="12" data-tilt-glare data-tilt-max-glare="0.2">
+        <h3><i class="fa-brands fa-react"></i> Frontend & UI</h3>
+        <div class="skill-tags">
+          <span>React.js</span>
+          <span>HTML5 / CSS3</span>
+          <span>Tailwind CSS</span>
+          <span>Responsive Design</span>
+          <span>UI/UX Standards</span>
         </div>
-    </section>
+      </div>
 
-    <!-- Learning Roadmap Section -->
-    <section id="roadmap" class="roadmap section-padding">
-        <div class="container">
-            <h2 class="section-title">Learning Roadmap</h2>
-            <div class="roadmap-container">
-                <div class="roadmap-item">
-                    <div class="roadmap-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <div class="roadmap-content">
-                        <h3>Currently Learning</h3>
-                        <p>Advanced CSS techniques and JavaScript fundamentals</p>
-                    </div>
-                </div>
-                
-                <div class="roadmap-item">
-                    <div class="roadmap-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="roadmap-content">
-                        <h3>Next Focus</h3>
-                        <p>Introduction to React.js</p>
-                    </div>
-                </div>
-                
-                <div class="roadmap-item">
-                    <div class="roadmap-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <div class="roadmap-content">
-                        <h3>Future Goals</h3>
-                        <p>Learning state management and API integration</p>
-                    </div>
-                </div>
-            </div>
+      <div class="tilt-card skill-card" data-tilt data-tilt-max="12" data-tilt-glare data-tilt-max-glare="0.2">
+        <h3><i class="fa-solid fa-database"></i> Database & Cloud</h3>
+        <div class="skill-tags">
+          <span>SQL</span>
+          <span>MySQL Workbench</span>
+          <span>Database Normalization</span>
+          <span>AWS Basics</span>
+          <span>REST APIs</span>
         </div>
-    </section>
+      </div>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact section-padding">
-        <div class="container">
-            <h2 class="section-title">Contact Me</h2>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h3>Phone</h3>
-                            <p>6303385399</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h3>Email</h3>
-                            <p>hymayadav21@gmail.com</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-linkedin"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h3>LinkedIn</h3>
-                            <p><a href="https://www.linkedin.com/in/vurukuti-hyma-yadav-7a5413370" target="_blank">Vurukuti Hyma Yadav</a></p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-github"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h3>GitHub</h3>
-                            <p><a href="https://github.com/hymayadav" target="_blank">hymayadav</a></p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
-                </div>
-            </div>
+      <div class="tilt-card skill-card" data-tilt data-tilt-max="12" data-tilt-glare data-tilt-max-glare="0.2">
+        <h3><i class="fa-solid fa-screwdriver-wrench"></i> Tools & Practices</h3>
+        <div class="skill-tags">
+          <span>Git & GitHub</span>
+          <span>Eclipse / NetBeans</span>
+          <span>Agile Workflows</span>
+          <span>Data QA & Profiling</span>
         </div>
-    </section>
+      </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2023 Vurukuti Hyma Yadav. All Rights Reserved.</p>
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/vurukuti-hyma-yadav-7a5413370" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://github.com/hymayadav" target="_blank"><i class="fab fa-github"></i></a>
-                </div>
-            </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience">
+    <h2 class="section-title">Professional Experience</h2>
+    <div class="experience-container">
+      <div class="tilt-card" data-tilt data-tilt-max="8">
+        <div class="exp-header">
+          <div>
+            <div class="exp-title">Operations Analyst (Software & Data Systems)</div>
+            <div class="exp-company">LanceSoft Private Limited (Client: Uber Living Maps)[cite: 1]</div>
+          </div>
+          <div class="exp-date">Dec 2025 – Present | Hyderabad[cite: 1]</div>
         </div>
-    </footer>
+        <ul class="clean-list">
+          <li>Executed spatial data annotation and mapping analysis for Uber Living Maps, ensuring routing-related algorithmic quality and high operational data accuracy[cite: 1].</li>
+          <li>Reviewed and validated large-scale geographic datasets to identify anomalies, supporting corrective automated workflows and SLA adherence[cite: 1].</li>
+          <li>Leveraged spreadsheet-based metrics analysis to track regional KPIs and collaborate with engineering teams on timely data ingestion pipelines[cite: 1].</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
+  <!-- Projects Section -->
+  <section id="projects">
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="projects-grid">
+      
+      <div class="tilt-card project-card" data-tilt data-tilt-max="10" data-tilt-glare data-tilt-max-glare="0.15">
+        <h3>Hospital Management System</h3>
+        <p style="color: var(--primary); font-size: 0.85rem; margin-bottom: 0.8rem; font-family: var(--font-code);">
+          Team Lead | MySQL, Java, Web Architecture[cite: 1]
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
+          Led a 10-member development team through end-to-end database design, registration flows, and doctor dashboards[cite: 1]. Optimized SQL queries to ensure quick data retrieval[cite: 1].
+        </p>
+        <div class="project-links">
+          <a href="#"><i class="fa-solid fa-code-branch"></i> Modular Architecture</a>
+        </div>
+      </div>
+
+      <div class="tilt-card project-card" data-tilt data-tilt-max="10" data-tilt-glare data-tilt-max-glare="0.15">
+        <h3>Interactive Portfolio 3D</h3>
+        <p style="color: var(--primary); font-size: 0.85rem; margin-bottom: 0.8rem; font-family: var(--font-code);">
+          Three.js, Vanilla Tilt, CSS3, ES6+
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
+          A hardware-accelerated 3D personal website featuring responsive glassmorphic cards, dynamic WebGL particle meshes, and smooth mobile interactivity.
+        </p>
+        <div class="project-links">
+          <a href="https://hymayadav.github.io/portfolio" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Site[cite: 1]</a>
+          <a href="https://github.com/hymayadav" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+        </div>
+      </div>
+
+      <div class="tilt-card project-card" data-tilt data-tilt-max="10" data-tilt-glare data-tilt-max-glare="0.15">
+        <h3>Dynamic Web & Mobile Prototypes</h3>
+        <p style="color: var(--primary); font-size: 0.85rem; margin-bottom: 0.8rem; font-family: var(--font-code);">
+          JavaScript, Kotlin, LocalStorage APIs
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
+          Collection of client-side web apps with state persistence, responsive form validations, and Kotlin-based mobile app UI experiments.
+        </p>
+        <div class="project-links">
+          <a href="https://github.com/hymayadav" target="_blank"><i class="fa-brands fa-github"></i> Repository</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="tilt-card contact-card" data-tilt data-tilt-max="6">
+      <h2 style="font-size: 2rem; margin-bottom: 0.8rem;">Let's Connect</h2>
+      <p style="color: var(--text-muted); font-size: 1rem;">
+        Open to full-time roles, software engineering discussions, and app development opportunities.
+      </p>
+      <div style="margin: 1.5rem 0; font-family: var(--font-code); color: var(--primary);">
+        <i class="fa-solid fa-envelope"></i> hymayadav21@gmail.com[cite: 1] &nbsp;|&nbsp; 
+        <i class="fa-solid fa-phone"></i> +91 63033 85399[cite: 1]
+      </div>
+      <div class="contact-socials">
+        <a href="https://linkedin.com/in/vurukuti-hyma-yadav-838b1a238" target="_blank" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/hymayadav" target="_blank" class="social-btn"><i class="fa-brands fa-github"></i></a>
+        <a href="mailto:hymayadav21@gmail.com" class="social-btn"><i class="fa-solid fa-paper-plane"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 Vurukuti Hyma Yadav. Crafted with Three.js & modern web standards.</p>
+  </footer>
+
+  <!-- Scripts: Three.js and Vanilla Tilt for 3D Effects -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+  <script>
+    // --- THREE.JS 3D BACKGROUND GRAPHICS ---
+    const canvas = document.getElementById('webgl-bg');
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(
+      60,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 30;
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Particle Cloud Geometry
+    const particlesCount = 700;
+    const posArray = new Float32Array(particlesCount * 3);
+
+    for (let i = 0; i < particlesCount * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 60;
+    }
+
+    const particlesGeometry = new THREE.BufferGeometry();
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.12,
+      color: 0x00f2fe,
+      transparent: true,
+      opacity: 0.8
+    });
+
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    // Floating 3D Geometric Polyhedron
+    const geo = new THREE.IcosahedronGeometry(7, 1);
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: 0x8a2be2,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.25
+    });
+    const icosahedron = new THREE.Mesh(geo, wireMat);
+    icosahedron.position.set(12, -4, 0);
+    scene.add(icosahedron);
+
+    // Mouse Interaction
+    let mouseX = 0;
+    let mouseY = 0;
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth) - 0.5;
+      mouseY = (e.clientY / window.innerHeight) - 0.5;
+    });
+
+    // Resize Handler
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Render Loop
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const elapsedTime = clock.getElapsedTime();
+
+      // Idle Rotation + Mouse Parallax
+      particlesMesh.rotation.y = elapsedTime * 0.03 + mouseX * 0.5;
+      particlesMesh.rotation.x = -mouseY * 0.5;
+
+      icosahedron.rotation.x = elapsedTime * 0.15;
+      icosahedron.rotation.y = elapsedTime * 0.2;
+      icosahedron.position.y = Math.sin(elapsedTime * 0.8) * 1.5;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
 </body>
 </html>
